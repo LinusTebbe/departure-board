@@ -4,13 +4,13 @@
     <input
         type="text"
         placeholder="Name"
-        @change="(event: Event) => updateStations((event.target as HTMLInputElement).value)"
+        v-model="searchQuery"
         class="bg-gray-600 px-2 max-w-80 flex-grow"
     />
   </div>
   <div class="flex flex-col gap-1 my-2 pr-2 -mr-2 max-h-64 overflow-y-auto">
     <div
-        v-for="station of stations"
+        v-for="station of stations?.suggestions"
         class="px-4 py-2 rounded-md bg-gray-600 cursor-pointer"
         :class="currentSelectedStationId === station.data ? 'bg-gray-800' : ''"
         @click="currentSelectedStationId = station.data"
@@ -29,7 +29,7 @@
           :class="activeTransportTypes.includes(transportType.type) ? 'border-white' : 'border-gray-500'"
           @click="() => toggleTransportType(transportType.type)"
         >
-        <img :src="transportType.image">
+        <img :src="transportType.image" :alt="transportType.typeName">
       </div>
     </div>
 
@@ -42,16 +42,21 @@
 </template>
 
 <script setup lang="ts">
-import type StationEntry from "~/interfaces/StationEntry";
 import type StationSearchResult from "~/interfaces/StationSearchResult";
 import appConfig from "~/app.config";
 
 const currentSelectedStationId = ref<number|null>(null)
 
-const stations = ref<StationEntry[]>([])
-const updateStations = async (searchQuery: string) => {
-  stations.value = (await $fetch<StationSearchResult>(`/api/search?query=${searchQuery}`)).suggestions
-}
+const searchQuery = ref<string>('')
+
+const {data: stations} = (await useFetch<StationSearchResult>(
+    `/api/search?query=${searchQuery.value}`,
+    {
+      query: {
+        query: searchQuery
+      },
+    }
+))
 
 const activeTransportTypes = ref<number[]>(appConfig.transportTypes.map(transportType => transportType.type))
 const toggleTransportType = (transportType: number) => {
