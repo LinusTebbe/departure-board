@@ -20,9 +20,9 @@
           </div>
         </div>
       </div>
-      <div class="ml-auto text-right">
-        <div v-if="departure.route !== departure.direction">{{ departure.route }}</div>
-        <div>➤ {{ departure.direction }}</div>
+      <div class="ml-auto text-right flex flex-col">
+        <div><span  v-if="departure.route !== departure.direction">{{ departure.route }}</span></div>
+        <div class="mt-auto">➤ {{ departure.direction }}</div>
       </div>
     </div>
   </div>
