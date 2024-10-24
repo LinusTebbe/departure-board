@@ -17,6 +17,11 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  app: {
+    head: {
+      title: 'Setup - Departure Board',
+    }
+  },
 
   modules: ['dayjs-nuxt'],
 })

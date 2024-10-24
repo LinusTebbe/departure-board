@@ -56,6 +56,10 @@ const {data, refresh} = await useFetch<DepartureResponse>('/api/table', {
   }
 })
 
+useHead({
+  title: (data.value?.stationName ?? '') + ' - Departures'
+})
+
 let interval: ReturnType<typeof setInterval>
 
 onNuxtReady(() => {

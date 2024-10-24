@@ -50,7 +50,7 @@ const currentSelectedStationId = ref<number|null>(null)
 const searchQuery = ref<string>('')
 
 const {data: stations} = (await useFetch<StationSearchResult>(
-    `/api/search?query=${searchQuery.value}`,
+    `/api/search`,
     {
       query: {
         query: searchQuery
