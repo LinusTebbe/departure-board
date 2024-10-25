@@ -10,8 +10,12 @@
       >
       <img :src="getTransportTypeFromResponseType(departure.type).image" class="min-h-full h-full" alt=""/>
       <div>
-        <div>
-          <span> {{ $dayjs.unix(departure.fullTime).local().format('HH:mm') }}</span>
+        <div class="font-mono">
+          <span v-if="departure.countdown <=30">
+            <span v-if="departure.countdown > 0"> In {{ departure.countdown }} min<span v-if="departure.countdown > 1">s</span></span>
+            <span v-else>Now</span>
+          </span>
+          <span v-else>{{ $dayjs.unix(departure.fullTime).local().format('HH:mm') }}</span>
           (<span v-if="departure.delay > 0" class="text-amber-500">+ {{ departure.delay }} min</span><span v-else class="text-green-500">on time</span>)
         </div>
         <div class="flex flex-row gap-2">
@@ -56,8 +60,11 @@ const {data, refresh} = await useFetch<DepartureResponse>('/api/table', {
   }
 })
 
+const stationName = computed(() => data.value?.stationName ?? '')
+
 useHead({
-  title: (data.value?.stationName ?? '') + ' - Departures'
+  title: stationName,
+  titleTemplate: (title) => (title === '' ? 'Departures' : `${title} - Departures`),
 })
 
 let interval: ReturnType<typeof setInterval>

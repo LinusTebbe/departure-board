@@ -1,5 +1,5 @@
 export default interface DepartureEntry {
-    countdown: string,
+    countdown: number,
     delay: number,
     direction: string,
     route: string,
