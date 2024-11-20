@@ -40,7 +40,6 @@ import type TransportType from "~/interfaces/TransportType";
 
 const stationId = useRoute().params.stationId
 const transportTypes = useRoute().params.transportTypes
-console.log(useRoute().query)
 const rowCount = (useRoute().query.rows ?? appConfig.defaultRowCount).toString()
 
 const formData = new FormData()
@@ -85,5 +84,8 @@ const getTransportTypeFromResponseType = (transportType: number): TransportType 
 }
 </script>
 
-<style scoped>
+<style>
+body {
+  overflow: hidden;
+}
 </style>
