@@ -40,13 +40,15 @@ import type TransportType from "~/interfaces/TransportType";
 
 const stationId = useRoute().params.stationId
 const transportTypes = useRoute().params.transportTypes
+console.log(useRoute().query)
+const rowCount = (useRoute().query.rows ?? appConfig.defaultRowCount).toString()
 
 const formData = new FormData()
 formData.append('table[departure][stationId]', stationId.toString())
 formData.append('table[departure][transport]', transportTypes.toString())
 formData.append('table[departure][useAllLines]', '1')
 formData.append('table[departure][optimizedForStation]', '0')
-formData.append('table[departure][rowCount]', appConfig.defaultRowCount.toString())
+formData.append('table[departure][rowCount]', rowCount)
 formData.append('table[sortBy]', '1')
 
 const {data, refresh} = await useFetch<DepartureResponse>('/api/table', {
